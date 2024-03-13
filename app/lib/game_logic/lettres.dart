@@ -1,33 +1,35 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as developer;
 
 void main() {
-  List<String> vowels = ['a', 'e', 'i', 'o', 'u'];
-  List<String> letters = generateRandomLetters(vowels);
+  List<String> letters = generateRandomLetters(0);
 
-  print('Random letters: $letters');
+  developer.log('Random letters: $letters');
 
-  print('Please form a word:');
+  developer.log('Please form a word:');
   String userInput = stdin.readLineSync()!.toLowerCase();
 
   // Check if the word contains only the letters provided
   if (!containsOnlyAvailableLetters(userInput, letters)) {
-    print('The word $userInput contains invalid letters.');
+     developer.log('The word $userInput contains invalid letters.');
   } else if (isValidWordFromFile(userInput)) {
-    print('The word $userInput is valid.');
+    developer.log('The word $userInput is valid.');
   } else {
-    print('The word $userInput is not valid.');
+     developer.log('The word $userInput is not valid.');
   }
 }
 
-List<String> generateRandomLetters(List<String> vowels) {
-  print('Enter the desired number of vowels (between 2 and 4):');
+List<String> generateRandomLetters(int numVowels) {
+  List<String> vowels = ['a', 'e', 'i', 'o', 'u'];
+  /* developer.log('Enter the desired number of vowels (between 2 and 4):');
   int numVowels = int.parse(stdin.readLineSync()!); // Parse directly to int
 
-  while (numVowels < 2 || numVowels > 4) {
-    print('Invalid input. Please enter an integer between 2 and 4:');
+  while (numVowels < 2 || numVowels > 4)
+  {
+     developer.log('Invalid input. Please enter an integer between 2 and 4:');
     numVowels = int.parse(stdin.readLineSync()!); // Parse again
-  }
+  */
   List<String> randomLetters = [];
   Random random = Random();
 
@@ -44,15 +46,15 @@ List<String> generateRandomLetters(List<String> vowels) {
     }
   }
   randomLetters.shuffle();
-
+  
   return randomLetters;
 }
 
 bool isValidWordFromFile(String word) {
-  File file = File('C:/Users/BOUMEDIEN/Desktop/words.txt');
+  File file = File('valid_words.txt');
 
   if (!file.existsSync()) {
-    print('Error: File not found.');
+     developer.log('Error: File not found.');
     return false;
   }
 
@@ -61,7 +63,7 @@ bool isValidWordFromFile(String word) {
     return validWords
         .any((validWord) => validWord.trim().toLowerCase() == word);
   } catch (e) {
-    print('Error: $e');
+     developer.log('Error: $e');
     return false;
   }
 }
