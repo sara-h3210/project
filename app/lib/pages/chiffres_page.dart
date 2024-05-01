@@ -28,33 +28,45 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    final List<dynamic> results = generateNumbers();
-    final List<int> _numbers = [];
-    final int _target = 0;
-   List<String> _solutions = [];
-   String? _closestSolution;
-    bool _showSolutions = false; // Flag to control solution visibility
+  final List<int> _numbers = generateNumbers();
+  final int _target = generateTarget();
+  List<String> _solutions = [];
+  List<String> _closestSolution = [];
+  bool _showSolutions = false;
+  String _currentExpression = '';
 
   @override
   void initState() {
     super.initState();
-    _findSolutions();
   }
 
   void _findSolutions() {
-    final List<dynamic> results = generateNumbers();
-    final List<int> _numbers = results[0];
-    final int _target = results[1];
     _solutions = findSolutions(_numbers, _target);
     if (_solutions.isNotEmpty) {
-      _closestSolution = null;
-       final sortedSolutions = _solutions.toList()
-      ..sort((a, b) => a.split(' ').length.compareTo(b.split(' ').length));
+      final sortedSolutions = _solutions.toList()
+        ..sort((a, b) => a.split(' ').length.compareTo(b.split(' ').length));
       _solutions = printSolution(sortedSolutions.first, _numbers, _target);
     } else {
       _closestSolution = findClosestSolution(_numbers, _target);
+      final sortedSolutions = _closestSolution.toList()
+        ..sort((a, b) => a.split(' ').length.compareTo(b.split(' ').length));
+      _closestSolution = printSolution(sortedSolutions.first, _numbers, _target);
     }
-    setState(() {});
+    setState(() {
+      _showSolutions = true;
+    });
+  }
+
+  void _appendNumber(int number) {
+    setState(() {
+      _currentExpression += number.toString();
+    });
+  }
+
+  void _appendOperation(String operation) {
+    setState(() {
+      _currentExpression += ' $operation ';
+    });
   }
 
   @override
@@ -67,33 +79,60 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Numbers: ${results[0].join(', ')}'),
+            Text('Numbers: ${_numbers.join(', ')}'),
             const SizedBox(height: 16),
-            Text('Target: ${results[1]}'),
+            Text('Target: $_target'),
+            const SizedBox(height: 16),
+            Text('Current Expression: $_currentExpression'),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 8,
+              children: [
+                ..._numbers.map((number) => ElevatedButton(
+                      onPressed: () => _appendNumber(number),
+                      child: Text(number.toString()),
+                    )),
+                ElevatedButton(
+                  onPressed: () => _appendOperation('+'),
+                  child: const Text('+'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _appendOperation('-'),
+                  child: const Text('-'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _appendOperation('*'),
+                  child: const Text('*'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _appendOperation('/'),
+                  child: const Text('/'),
+                ),
+              ],
+            ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
-                _findSolutions(); // Call findSolutions on button press
-                setState(() {
-                  _showSolutions = true; // Show solutions after finding
-                });
-              },
+              onPressed: _findSolutions,
               child: const Text('Find Solution'),
             ),
-            if (_showSolutions) // Only show solutions if _showSolutions is true
+            if (_showSolutions && _solutions.isNotEmpty)
               Column(
                 children: [
                   const Text('Solution:'),
                   ..._solutions.map((solution) => Text(solution)),
                 ],
               ),
-            if (_closestSolution != null && !_showSolutions)
-              Text('Closest Solution: $_closestSolution')
-            else if (!_showSolutions)
-              const Text('No Solution Found'),
+            if (_showSolutions && !_solutions.isNotEmpty)
+              Column(
+                children: [
+                  const Text('Closest Solution:'),
+                  ..._closestSolution.map((closestSolution) => Text(closestSolution)),
+                ],
+              ),
           ],
         ),
       ),
     );
   }
 }
+
