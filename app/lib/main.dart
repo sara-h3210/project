@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:app/pages/letters_page.dart'; // Import the lettersPage
+import 'package:app/pages/start_page.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Des chiffres et des lettres',
-      home: LettersPage(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'LETTERS & NUMBERS',
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const StartPage(),
     );
   }
 }
