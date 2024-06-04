@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/game_logic/lettres.dart';
+import 'package:app/game_logic/letters.dart';
 
 class LettersPage extends StatefulWidget {
   const LettersPage({super.key});
