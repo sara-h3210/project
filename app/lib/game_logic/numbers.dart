@@ -1,24 +1,5 @@
 import 'dart:math';
 
-void main() {
-  List<int> numbers = generateNumbers();
-  int target = generateTarget();
-
-  final solutions = findSolutions(numbers, target);
-  final solutions2 = finalSolution(numbers, target);
-  print("Closest solution: $solutions2");
-  if (solutions.isNotEmpty) {
-    print("Solutions:");
-    final sortedSolutions = solutions.toList()
-      ..sort((a, b) => a.split(' ').length.compareTo(b.split(' ').length));
-    printSolution(sortedSolutions.first, numbers, target);
-  } else {
-    print("No exact solution found");
-    final closestSolution = findClosestSolution(numbers, target);
-    printSolution(closestSolution.first, numbers, target);
-    //print("Closest solution: $closestSolution");
-  }
-}
 
 List<int> generateNumbers() {
   Random random = Random();
@@ -32,7 +13,7 @@ List<int> generateNumbers() {
   }
 
   List<int> numbers = numbersSet.toList(); // Convert the set to a list
-  print('Numbers: ${numbers.join(', ')}');
+  //print('Numbers: ${numbers.join(', ')}');
   return numbers;
 }
 

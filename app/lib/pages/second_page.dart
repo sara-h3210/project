@@ -2,23 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app/pages/numbers_page.dart';
 import 'package:app/pages/letters_page.dart';
 
-void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'LETTERS & NUMBERS',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const GameHomePage(),
-    );
-  }
-}
 
 class GameHomePage extends StatelessWidget {
   const GameHomePage({super.key});
