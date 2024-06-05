@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/pages/numbers_page.dart';
 import 'package:app/pages/letters_page.dart';
-//import 'package:app/pages/l.dart';
 
 void main() => runApp(const MyApp());
 

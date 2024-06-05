@@ -59,7 +59,6 @@ class _NumbersPageState extends State<NumbersPage> {
       _closestSolution =
           printSolution(sortedSolutions.first, _numbers, _target);
     }
-    
   }
 
   void _appendNumber(int number) {
@@ -235,7 +234,8 @@ class _NumbersPageState extends State<NumbersPage> {
                 child: const Text('Try Again'),
               ),
               TextButton(
-                onPressed: () {_findSolutions();
+                onPressed: () {
+                  _findSolutions();
                   Navigator.of(context).pop();
 
                   // Close the current dialog
@@ -395,9 +395,7 @@ class _NumbersPageState extends State<NumbersPage> {
                             ),
                             SizedBox(width: 10), // Add some spacing here
                             GestureDetector(
-                              onTap: () {
-                                // Your logic here
-                              },
+                              onTap: () {},
                               child: Container(
                                 width: 40,
                                 height: 40,
@@ -763,13 +761,13 @@ class _NumbersPageState extends State<NumbersPage> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: const Center(
-                                        child: Text(
-                                          'Undo',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      child: Center(
+                                        child: FittedBox(
+                                          child: const Text('Undo',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              )),
                                         ),
                                       ),
                                     ),

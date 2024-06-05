@@ -1,10 +1,12 @@
+// ignore_for_file: camel_case_types, prefer_const_constructors, library_private_types_in_public_api, sort_child_properties_last, prefer_const_literals_to_create_immutables, non_constant_identifier_names, sized_box_for_whitespace
 
-import 'dart:convert';
-import 'dart:io';
+//import 'dart:convert';
+//import 'dart:io';
 
 import 'package:app/game_logic/letters.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class letterspage extends StatelessWidget {
   const letterspage({super.key});
@@ -13,7 +15,7 @@ class letterspage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Word Finder',
+      title: 'Letters',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -187,22 +189,26 @@ class _WordFinderScreenState extends State<WordFinderScreen> {
                           ),
                           SizedBox(height: 50),
                           ElevatedButton(
-                            onPressed: () async {
-                              for (var sublist in result) {
-                                var sublistLength = sublist.length;
-                                var filePath =
-                                    'C:/dictionnaire/w$sublistLength.txt';
-                                var trie = Trie();
-                                var file = File(filePath);
-                                await for (var line in file
-                                    .openRead()
-                                    .transform(utf8.decoder)
-                                    .transform(LineSplitter())) {
-                                  var words = line.split(' ');
-                                  for (var word in words) {
-                                    trie.insert2(word);
-                                  }
-                                }
+  onPressed: () async {
+    for (var sublist in result) {
+      var sublistLength = sublist.length;
+      var filePath = 'assets/words/w$sublistLength.txt';
+      var trie = Trie();
+
+      try {
+        String fileContent = await rootBundle.loadString(filePath);
+        List<String> lines = fileContent.split('\n');
+
+        for (var line in lines) {
+          var words = line.split(' ');
+          for (var word in words) {
+            trie.insert2(word);
+          }
+        }
+      } catch (e) {
+        // Handle error if the file is not found
+        print('Error loading file: $filePath');
+      }
                                 var foundWords =
                                     findWordsWithLetters(trie, sublist);
                                 if (foundWords.isNotEmpty) {
@@ -210,10 +216,10 @@ class _WordFinderScreenState extends State<WordFinderScreen> {
                                   break;
                                 }
                               }
-                              if (enteredWord.isNotEmpty) {
-                                int wordLength = enteredWord.length;
-                                var tree = await readTreeFromFile(
-                                    'C:/dictionnaire/w$wordLength.txt');
+                             if (enteredWord.isNotEmpty) {
+      int wordLength = enteredWord.length;
+      var filePath = 'assets/words/w$wordLength.txt';
+      var tree = await readTreeFromFile(filePath);
 
                                 int x = checkWordAndSearch(
                                     tree, enteredWord, randomLetters);
@@ -256,7 +262,7 @@ class _WordFinderScreenState extends State<WordFinderScreen> {
                                   horizontal: 32, vertical: 12),
                             ),
                           ),
-                          SizedBox(height: 70),
+                          SizedBox(height: 40),
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),

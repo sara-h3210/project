@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'dart:io';
+//import 'dart:io';
 import 'dart:math';
+
+import 'package:flutter/services.dart';
 
 // TrieNode class represents a node in a Trie (prefix tree)
 class TrieNode {
@@ -130,19 +132,23 @@ class Trie {
 Future<Tree> readTreeFromFile(String filePath) async {
   // Create a new tree
   var tree = Tree();
-  // Open the file
-  var file = File(filePath);
+
   try {
-    // Read lines from the file
-    List<String> lines = await file.readAsLines();
+    // Read the file from the assets directory
+    String fileContent = await rootBundle.loadString(filePath);
+
+    // Split the file content into lines
+    List<String> lines = fileContent.split('\n');
+
     // Insert each line into the tree
     for (var line in lines) {
       tree.insert(line);
     }
   } catch (e) {
-    // Print error if occurs
-    print('Error reading file: $e');
+    // Rethrow the exception
+    rethrow;
   }
+
   // Return the tree
   return tree;
 }
